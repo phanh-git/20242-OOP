@@ -1,0 +1,8 @@
+- What are the advantages of Polymorphism?
+Tính đa hình giúp chương trình linh hoạt hơn bằng cách cho phép một phương thức hoặc hành vi có thể hoạt động khác nhau tùy vào từng đối tượng cụ thể, từ đó làm giảm sự phụ thuộc giữa các lớp, tăng khả năng mở rộng, dễ bảo trì và tái sử dụng mã nguồn mà không cần thay đổi nhiều đến cấu trúc hiện tại.
+
+- How is Inheritance useful to achieve Polymorphism in Java?
+Trong Java, kế thừa cho phép lớp con kế thừa các phương thức từ lớp cha và ghi đè chúng để cung cấp cách triển khai riêng, nhờ đó khi sử dụng một biến kiểu lớp cha để tham chiếu đến đối tượng lớp con và gọi phương thức được ghi đè thì phương thức phù hợp với lớp con sẽ được thực thi, thể hiện rõ tính đa hình động tại thời điểm chạy chương trình.
+
+- What are the differences between Polymorphism and Inheritance in Java?
+Kế thừa là cơ chế cho phép một lớp con kế thừa thuộc tính và hành vi từ lớp cha nhằm mục đích tái sử dụng mã nguồn và xây dựng mối quan hệ phân cấp giữa các lớp, trong khi đó tính đa hình là khả năng đối tượng có thể được xử lý theo nhiều cách khác nhau thông qua cùng một giao diện hoặc lớp cha, do đó kế thừa là công cụ giúp triển khai tính đa hình, nhưng chúng là hai khái niệm riêng biệt với mục đích và ứng dụng khác nhau trong lập trình hướng đối tượng.
