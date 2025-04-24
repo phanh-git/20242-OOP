@@ -1,0 +1,31 @@
+14. Which classes are aggregates of other classes? 
+Checking all constructors of whole classes if they initialize for their parts?
+
+- CompactDisc là aggregate của Track
+Có ArrayList<Track> tracks
+Constructor có khởi tạo tracks = new ArrayList<>();
+- Store là aggregate của Media
+Có ArrayList<Media> itemsInStore
+Constructor mặc định vẫn khởi tạo itemsInStore = new ArrayList<>();
+- Book là aggregate của String (danh sách tác giả)
+Có List<String> authors = new ArrayList<>();
+Khởi tạo khi khai báo (ngay cả khi không có constructor cụ thể)
+
+15. When overriding the equals() method of the Object class, you will have to cast the Object parameter obj to the type of Object that you are dealing with. For example, in the Media class, you must cast the Object obj to a Media, and then check the equality of the two objects’ attributes as the above requirements (i.e. title for Media; title and length for Track). If the passing object is not an instance of Media, what happens?
+
+Khi ghi đè phương thức equals() của lớp Object, nếu đối tượng truyền vào (obj) không phải là một thể hiện của kiểu đang làm việc (ví dụ: Media hoặc Track), trả về false trong hầu hết các trường hợp. Điều này bởi vì nếu hai đối tượng không cùng kiểu, chúng không được coi là bằng nhau.
+
+17. Alternatively, to compare items in the cart, instead of using the Comparator class I have mentioned, you can use the Comparable interface1 and override the compareTo()method. You can refer to the Java docs to see the information of this interface.
+Suppose we are taking this Comparable interface approach.
+- What class should implement the Comparable interface?
+Lớp Media nên implement interface Comparable vì nó đại diện cho đối tượng mà chúng ta muốn so sánh và sắp xếp theo một thứ tự mặc định nào đó.
+
+- In those classes, how should you implement the compareTo()method to reflect the ordering that we want?
+Trong lớp Media, phương thức compareTo() nên được cài đặt sao cho phản ánh thứ tự mặc định mà ta muốn, ví dụ nếu muốn sắp xếp theo title rồi đến cost, thì ta sẽ so sánh title trước, nếu bằng nhau thì tiếp tục so sánh cost.
+
+- Can we have two ordering rules of the item (by title then cost and by cost then title) if we use this Comparable interface approach?
+Không thể, bởi vì interface Comparable chỉ cho phép định nghĩa một cách sắp xếp mặc định thông qua phương thức compareTo(), do đó nếu ta muốn có nhiều cách sắp xếp khác nhau (ví dụ vừa sắp xếp theo title trước, vừa có lúc cần sắp xếp theo cost trước), thì cần sử dụng thêm các class Comparator riêng biệt để linh hoạt thay đổi quy tắc so sánh.
+
+- Suppose the DVDs have a different ordering rule from the other media types, that is by title, then decreasing length, then cost. How would you modify your code to allow this?
+
+Ta có thể tạo một lớp con DVD kế thừa từ lớp Media và override lại phương thức compareTo() trong lớp DVD để cài đặt quy tắc sắp xếp riêng là so sánh theo title, nếu bằng nhau thì so sánh length theo thứ tự giảm dần (dùng Double.compare(d2.length, d1.length)), và nếu vẫn bằng nhau thì so sánh theo cost. Việc override này cho phép mỗi loại media có một cách sắp xếp riêng biệt mà không ảnh hưởng đến các loại khác.

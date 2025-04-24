@@ -35,4 +35,5 @@ public class Book extends Media {
         System.out.println("Cost: " + getCost() + "$");
         System.out.println("Content length (estimated): " + (getTitle().length() + authors.size() * 10));
     }
+
 }

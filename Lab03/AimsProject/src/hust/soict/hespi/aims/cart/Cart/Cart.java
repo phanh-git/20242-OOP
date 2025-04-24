@@ -1,5 +1,8 @@
 package hust.soict.hespi.aims.cart.Cart;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import hust.soict.hespi.aims.media.Media;
 
 public class Cart {
@@ -20,6 +23,14 @@ public class Cart {
         }
     }
 
+    public Media searchByTitle(String title) {
+        for (Media media : itemsOrdered) {
+            if (media.getTitle().equalsIgnoreCase(title)) {
+                return media;
+            }
+        }
+        return null;
+    }
     // Tính tổng chi phí của giỏ hàng
     public float totalCost() {
         float total = 0;
@@ -27,6 +38,32 @@ public class Cart {
             total += media.getCost();
         }
         return total;
+    }
+
+    public void filterById(int id) {
+        for (Media media : itemsOrdered) {
+            if (media.getId() == id) {
+                System.out.println(media.toString());
+            }
+        }
+    }
+
+    public void filterByTitle(String title) {
+        for (Media media : itemsOrdered) {
+            if (media.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                System.out.println(media.toString());
+            }
+        }
+    }
+
+    public void sortByTitle() {
+        Collections.sort(itemsOrdered, Comparator.comparing(Media::getTitle));
+        printCart();
+    }
+
+    public void sortByCost() {
+        Collections.sort(itemsOrdered, Comparator.comparing(Media::getCost).reversed());
+        printCart();
     }
 
     // Phương thức để in giỏ hàng (tùy chọn, nếu cần)
@@ -38,5 +75,10 @@ public class Cart {
         }
         System.out.println("Total cost: " + totalCost());
         System.out.println("***************************************************");
+    }
+
+    public void clear() {
+        itemsOrdered.clear();
+        System.out.println("The cart has been emptied.");
     }
 }
