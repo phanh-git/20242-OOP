@@ -18,17 +18,21 @@ public class AddDigitalVideoDiscToStoreScreen extends JFrame {
 
     public AddDigitalVideoDiscToStoreScreen(Store store) {
         this.store = store;
+
         setTitle("Add DVD");
         setSize(600, 400);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Menu bar (reuse from StoreManagerScreen)
-        setJMenuBar(new StoreManagerScreen(store).createMenuBar());
+        // === North: MenuBar ===
+        JMenuBar menuBar = new JMenuBar();
+        JMenu optionsMenu = new JMenu("Options");
+        menuBar.add(optionsMenu);
+        setJMenuBar(menuBar);
 
-        // === Form panel ===
-        JPanel formPanel = new JPanel(new GridLayout(7, 2, 10, 10));
+        // === Center: Form input ===
+        JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         idField = new JTextField();
@@ -48,15 +52,20 @@ public class AddDigitalVideoDiscToStoreScreen extends JFrame {
         formPanel.add(costField);
         formPanel.add(new JLabel("Director:"));
         formPanel.add(directorField);
-        formPanel.add(new JLabel("Length (minutes):"));
+        formPanel.add(new JLabel("Length:"));
         formPanel.add(lengthField);
 
-        JButton addButton = new JButton("Add to Store");
-        addButton.addActionListener(e -> addItemToStore());
-        formPanel.add(new JLabel()); // Empty label for layout
-        formPanel.add(addButton);
-
         add(formPanel, BorderLayout.CENTER);
+
+        // === South: Add button ===
+        JButton addButton = new JButton("Add to Store");
+        addButton.setPreferredSize(new Dimension(150, 30));
+        addButton.addActionListener(e -> addItemToStore());
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
         setVisible(true);
     }
 
@@ -80,7 +89,7 @@ public class AddDigitalVideoDiscToStoreScreen extends JFrame {
             JOptionPane.showMessageDialog(this, "DVD added successfully!");
             clearFields();
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid ID, cost, or length format!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid number format!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

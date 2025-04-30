@@ -3,12 +3,12 @@ package aims.screen.manager;
 import hust.soict.hespi.aims.media.Book;
 import hust.soict.hespi.aims.screen.manager.StoreManagerScreen;
 import hust.soict.hespi.aims.store.Store;
+import hust.soict.hespi.aims.screen.manager.AddItemToStoreScreen;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AddBookToStoreScreen extends JFrame {
-    private Store store;
+public class AddBookToStoreScreen extends AddItemToStoreScreen {
     private JTextField idField;
     private JTextField titleField;
     private JTextField categoryField;
@@ -16,19 +16,18 @@ public class AddBookToStoreScreen extends JFrame {
     private JTextField authorField;
 
     public AddBookToStoreScreen(Store store) {
-        this.store = store;
+        super(store); // Gọi constructor của AddItemToStoreScreen
+
         setTitle("Add Book");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        // Set layout
         setLayout(new BorderLayout());
 
-        // === MENU BAR (tái sử dụng từ StoreManagerScreen) ===
+        // === Menu Bar ===
         setJMenuBar(new StoreManagerScreen(store).createMenuBar());
 
-        // === FORM PANEL ===
+        // === Form Input ===
         JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -49,15 +48,21 @@ public class AddBookToStoreScreen extends JFrame {
         formPanel.add(new JLabel("Author:"));
         formPanel.add(authorField);
 
-        JButton addButton = new JButton("Add to Store");
-        addButton.addActionListener(e -> addItemToStore());
-        formPanel.add(new JLabel()); // empty label for layout
-        formPanel.add(addButton);
-
         add(formPanel, BorderLayout.CENTER);
+
+        // === Add Button ===
+        JButton addButton = new JButton("Add to Store");
+        addButton.setPreferredSize(new Dimension(150, 30));
+        addButton.addActionListener(e -> addItemToStore());
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
         setVisible(true);
     }
 
+    @Override
     protected void addItemToStore() {
         try {
             int id = Integer.parseInt(idField.getText());
@@ -78,7 +83,7 @@ public class AddBookToStoreScreen extends JFrame {
             JOptionPane.showMessageDialog(this, "Book added successfully!");
             clearFields();
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid ID or cost format!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid number format!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

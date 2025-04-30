@@ -2,13 +2,10 @@ package hust.soict.hespi.aims.screen.manager;
 
 import hust.soict.hespi.aims.media.CompactDisc;
 import hust.soict.hespi.aims.store.Store;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class AddCompactDiscToStoreScreen extends JFrame {
-    private Store store;
-
+public class AddCompactDiscToStoreScreen extends AddItemToStoreScreen {
     private JTextField idField;
     private JTextField titleField;
     private JTextField categoryField;
@@ -17,26 +14,27 @@ public class AddCompactDiscToStoreScreen extends JFrame {
     private JTextField artistField;
 
     public AddCompactDiscToStoreScreen(Store store) {
-        this.store = store;
+        super(store); // gọi constructor lớp cha
+
         setTitle("Add CD");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Menu bar (reuse from StoreManagerScreen)
+        // === Menu Bar ===
         setJMenuBar(new StoreManagerScreen(store).createMenuBar());
 
-        // === Form panel ===
-        JPanel formPanel = new JPanel(new GridLayout(7, 2, 10, 10));
+        // === Form Input ===
+        JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        idField = new JTextField();
-        titleField = new JTextField();
+        idField       = new JTextField();
+        titleField    = new JTextField();
         categoryField = new JTextField();
-        costField = new JTextField();
+        costField     = new JTextField();
         directorField = new JTextField();
-        artistField = new JTextField();
+        artistField   = new JTextField();
 
         formPanel.add(new JLabel("ID:"));
         formPanel.add(idField);
@@ -51,44 +49,61 @@ public class AddCompactDiscToStoreScreen extends JFrame {
         formPanel.add(new JLabel("Artist:"));
         formPanel.add(artistField);
 
-        JButton addButton = new JButton("Add to Store");
-        addButton.addActionListener(e -> addItemToStore());
-        formPanel.add(new JLabel()); // Empty label for alignment
-        formPanel.add(addButton);
-
         add(formPanel, BorderLayout.CENTER);
+
+        // === Add Button ===
+        JButton addButton = new JButton("Add to Store");
+        addButton.setPreferredSize(new Dimension(150, 30));
+        addButton.addActionListener(e -> addItemToStore());
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
         setVisible(true);
     }
 
-    private void addItemToStore() {
+    @Override
+    protected void addItemToStore() {
         try {
-            int id = Integer.parseInt(idField.getText());
+            int id       = Integer.parseInt(idField.getText());
             String title = titleField.getText();
             String category = categoryField.getText();
-            float cost = Float.parseFloat(costField.getText());
+            float cost   = Float.parseFloat(costField.getText());
             String director = directorField.getText();
-            String artist = artistField.getText();
+            String artist   = artistField.getText();
 
-            if (title.isEmpty() || category.isEmpty() || director.isEmpty() || artist.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please fill in all fields!", "Error", JOptionPane.ERROR_MESSAGE);
+            if (title.isEmpty() || category.isEmpty() ||
+                    director.isEmpty() || artist.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Please fill in all fields!", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             CompactDisc cd = new CompactDisc(id, title, category, cost, director, artist);
             store.addMedia(cd);
-            JOptionPane.showMessageDialog(this, "CD added successfully!");
+
+            JOptionPane.showMessageDialog(this,
+                    "CD added successfully!");
             clearFields();
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid ID or cost format!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Invalid number format!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void clearFields() {
+    protected void clearFields() {
         idField.setText("");
         titleField.setText("");
         categoryField.setText("");
         costField.setText("");
         directorField.setText("");
         artistField.setText("");
+
+        // cũng clear các field chung từ lớp cha
+        titleField.setText("");
+        costField.setText("");
     }
 }
