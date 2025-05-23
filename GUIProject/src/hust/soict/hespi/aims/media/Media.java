@@ -1,4 +1,6 @@
 package hust.soict.hespi.aims.media;
+import hust.soict.hespi.aims.exception.NegativePriceException;
+
 import java.util.Collection;
 import java.util.Comparator;
 
@@ -31,17 +33,25 @@ public abstract class Media implements Comparable<Media> {
     public float getCost() {
         return cost;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public void setCost(float cost) throws NegativePriceException {
+        if (cost < 0) {
+            throw new NegativePriceException("ERROR: Media price cannot be negative");
+        }
+        this.cost = cost;
+    }
 
-        Media media = (Media) o; // ép kiểu
-        return this.title != null && this.title.equals(media.getTitle());
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // so sánh địa chỉ
+        if (obj == null || !(obj instanceof Media)) return false;
+
+        Media other = (Media) obj;
+        return this.title.equals(other.title) && this.cost == other.cost;
     }
 
     public static final Comparator<Media> COMPARE_BY_TITLE_COST = new MediaComparatorByTitleCost();
@@ -49,6 +59,13 @@ public abstract class Media implements Comparable<Media> {
 
     @Override
     public int compareTo(Media other) {
-        return this.getTitle().compareTo(other.getTitle());
+        if (other == null) throw new NullPointerException("Compared media is null");
+
+        int titleCompare = this.title.compareTo(other.title);
+        if (titleCompare != 0) {
+            return titleCompare;
+        } else {
+            return Float.compare(this.cost, other.cost);
+        }
     }
 }

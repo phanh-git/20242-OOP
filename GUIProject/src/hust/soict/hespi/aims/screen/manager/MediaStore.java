@@ -1,5 +1,6 @@
 package hust.soict.hespi.aims.screen.manager;
 
+import hust.soict.hespi.aims.exception.PlayerException;
 import hust.soict.hespi.aims.media.Media;
 import hust.soict.hespi.aims.media.Playable;
 
@@ -26,11 +27,24 @@ public class MediaStore extends JPanel {
         if (media instanceof Playable) {
             JButton playButton = new JButton("Play");
             playButton.addActionListener(e -> {
-                ((Playable) media).play(); // Gọi play() trước
-                JOptionPane.showMessageDialog(null,
-                        "Media is now playing",
-                        "PLAYING " + media.getTitle(),
-                        JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    ((Playable) media).play(); // Gọi play có thể ném PlayerException
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Media is now playing",
+                            "PLAYING " + media.getTitle(),
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                } catch (PlayerException ex) {
+                    // Hiển thị thông báo lỗi nếu phát không thành công
+                    JOptionPane.showMessageDialog(
+                            null,
+                            ex.getMessage(),
+                            "ERROR",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             });
             container.add(playButton);
         }
