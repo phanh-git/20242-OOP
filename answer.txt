@@ -1,16 +1,9 @@
-Questions:
-Programming with AWT and Swing is quite similar (similar elements including container/components, and 
-event-handling). However, there are some differences that you need to note: 
-- Compare the top-level containers in Swing and AWT 
-- Compare the class name of components in AWT and the corresponding class’s name in Swing 
-- Compare the event-handling of Swing and AWT applications 
-The resulting appearances of the applications developed using Swing and AWT might be different as well. 
-Make comparisons.  
+Q: The Aims class must be updated to handle any exceptions generated when the play() methods
+are called. What happens when you don’t update for them to catch?
 
-Answer:
-AWT và Swing đều dùng để tạo giao diện trong Java, nhưng có nhiều điểm khác biệt. AWT sử dụng các thành phần như Frame, Button, Label và là heavyweight, tức phụ thuộc vào hệ điều hành. Swing thì cung cấp các lớp tương ứng như JFrame, JButton, JLabel, là lightweight, viết hoàn toàn bằng Java nên giao diện đồng nhất, đẹp hơn và dễ tùy biến.
 
-Các lớp trong Swing thường bắt đầu bằng chữ “J” để phân biệt. Về xử lý sự kiện, cả hai đều dùng mô hình listener giống nhau, nhưng Swing hỗ trợ nhiều loại listener hơn.
 
-Giao diện tạo bằng Swing hiện đại và linh hoạt hơn so với AWT, nên Swing thường được sử dụng nhiều hơn trong các ứng dụng Java ngày nay.
+A: 
+Nếu không cập nhật lớp Aims để bắt các ngoại lệ khi gọi phương thức play(), thì khi một ngoại lệ xảy ra (ví dụ như khi không thể phát một đĩa DVD hoặc CD do lỗi nào đó), chương trình sẽ bị dừng đột ngột và ném ra lỗi (exception) chưa được xử lý. Điều này có thể dẫn đến trải nghiệm người dùng không tốt và khiến ứng dụng không ổn định.
 
+Việc xử lý ngoại lệ (try-catch) sẽ giúp chương trình tiếp tục chạy bình thường ngay cả khi có lỗi xảy ra, đồng thời có thể thông báo lỗi một cách rõ ràng cho người dùng (ví dụ: "Không thể phát media này vì bị lỗi định dạng.").
